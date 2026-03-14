@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html class="scroll-smooth antialiased" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Design System - Relógio</title>
+
+    <!-- Assets based on references -->
+    <script src="assets/resource_3fa48481346f.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        base: '#EAEAE5',
+                        surface: '#F4F4F0',
+                        ink: '#1C1C1C',
+                        neutral: {
+                            100: '#F5F5F5',
+                            200: '#E5E5E5',
+                            300: '#D4D4D4',
+                            400: '#A3A3A3',
+                            500: '#737373',
+                            800: '#262626',
+                            900: '#171717',
+                        },
+                        accent: {
+                            DEFAULT: '#ccff00', /* acid glow */
+                            dark: '#A3CC00'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 4s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #EAEAE5;
+            color: #1C1C1C;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 1) Animations - Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Reveal Masks */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+            line-height: normal;
+            /* Keep line height consistent */
+        }
+
+        .text-reveal-wrapper.inline-reveal {
+            vertical-align: top;
+        }
+
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: inline-block;
+            will-change: transform;
+        }
+
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Delays */
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s;
+        }
+
+        /* Background Graphics */
+        .bg-grid {
+            background-size: 30px 30px;
+            background-image: linear-gradient(to right, rgba(28, 28, 28, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(28, 28, 28, 0.05) 1px, transparent 1px);
+        }
+
+        /* Hero Carousel */
+        .carousel-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .carousel-bg.active {
+            opacity: 1;
+        }
+
+        .carousel-bg img {
+            transform: scale(1);
+            transition: transform 10s ease-out;
+            filter: grayscale(100%) contrast(1.2) brightness(1.2);
+        }
+
+        .carousel-bg.active img {
+            transform: scale(1.05);
+        }
+
+        /* Interactive Flashlight Effect */
+        .flashlight-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .flashlight-card::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                    rgba(255, 255, 255, 0.9),
+                    transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .flashlight-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Infinite Marquee */
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .marquee-content {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-around;
+            min-width: 100%;
+            animation: marquee 30s linear infinite;
+        }
+
+        /* Gemini Glow Button (Light Version) */
+        .btn-beam {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+        }
+
+        .btn-beam-bg {
+            position: absolute;
+            inset: -2px;
+            background: conic-gradient(from 0deg, transparent 0 340deg, #1C1C1C 360deg);
+            animation: spin 2s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: inherit;
+            z-index: 0;
+        }
+
+        .btn-beam:hover .btn-beam-bg {
+            opacity: 1;
+        }
+
+        .btn-beam-inner {
+            background-color: #EAEAE5;
+            margin: 1px;
+            z-index: 10;
+            position: relative;
+            border-radius: inherit;
+        }
+
+        .btn-beam:hover .btn-beam-inner {
+            background-color: white;
+        }
+
+        /* Tooltip animation */
+        .group-hover-tooltip:hover .tooltip-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tooltip-content {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Forms */
+        .input-glass {
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .input-glass:focus {
+            background: white;
+            border-color: #1C1C1C;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body class="bg-grid relative">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 w-full z-50 border-b border-neutral-300 bg-base/80 backdrop-blur-md reveal loaded"
+        style="transform:translateY(0);opacity:1;">
+        <div
+            class="max-w-[1400px] mx-auto flex justify-between items-center px-6 py-4 border-l border-r border-neutral-300">
+            <div class="flex items-center gap-2 font-bold tracking-tighter text-xl">
+                <iconify-icon icon="solar:infinity-bold-duotone" class="text-accent-dark text-2xl rotate-90"
+                    id="logo-icon"></iconify-icon>
+                <span>SYS.RELÓGIO</span>
+            </div>
+            <nav class="hidden md:flex gap-8 text-xs font-mono uppercase tracking-widest text-neutral-500">
+                <a href="#typography" class="hover:text-ink transition-colors">Typography</a>
+                <a href="#colors" class="hover:text-ink transition-colors">Colors</a>
+                <a href="#components" class="hover:text-ink transition-colors">Components</a>
+                <a href="#icons" class="hover:text-ink transition-colors">Icons</a>
+            </nav>
+            <button
+                class="bg-ink text-white px-5 py-2 text-sm font-medium rounded hover:bg-neutral-800 transition-colors">
+                Download UI
+            </button>
+        </div>
+    </header>
+
+    <div class="max-w-[1400px] mx-auto border-x border-neutral-300 relative bg-base pt-[72px]">
+
+        <!-- ==============================================
+             1. HERO FOLD
+        =============================================== -->
+        <section class="min-h-[90vh] relative border-b border-neutral-300 overflow-hidden flex flex-col justify-end">
+            <!-- Background Images -->
+            <div id="hero-carousel" class="absolute inset-0 z-0">
+                <div class="carousel-bg active w-full h-full">
+                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="carousel-bg w-full h-full">
+                    <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2000&auto=format&fit=crop"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- Foreground UI Overlay -->
+            <div class="absolute inset-0 z-10 bg-gradient-to-t from-base via-base/20 to-transparent"></div>
+
+            <!-- Massive Transparent Text Container -->
+            <div class="relative z-20 px-6 pb-20 md:pb-32 text-white mix-blend-difference pointer-events-none">
+                <!-- Using Text Reveal Animations over the blending -->
+                <h1 class="text-[12vw] leading-[0.85] font-bold tracking-tighter" id="hero-title">
+                    <span class="text-reveal-wrapper"><span
+                            class="text-reveal-content delay-100">ESTÉTICA</span></span><br>
+                    <span class="text-reveal-wrapper"><span
+                            class="text-reveal-content delay-300">RELÓGIO</span></span><br>
+                    <span class="text-reveal-wrapper"><span
+                            class="text-reveal-content delay-500 text-neutral-400">DESIGN SYSTEM</span></span>
+                </h1>
+
+                <div class="mt-8 flex gap-6 reveal delay-500 pointer-events-auto items-center">
+                    <span
+                        class="px-3 py-1 border border-white/50 rounded-full text-xs font-mono uppercase bg-white/10 backdrop-blur">Version
+                        2.0</span>
+                    <span class="flex items-center gap-2 text-sm font-mono"><span
+                            class="w-2 h-2 rounded-full bg-accent-dark animate-pulse"></span> SYSTEM ACTIVE</span>
+                </div>
+            </div>
+
+            <!-- Floating Right Stats -->
+            <div
+                class="absolute bottom-12 right-6 md:right-12 z-20 flex flex-col gap-8 reveal delay-400 text-right mix-blend-difference text-white">
+                <div class="group">
+                    <h2
+                        class="text-4xl md:text-5xl font-medium tracking-tighter group-hover:scale-110 transition-transform origin-right">
+                        24+</h2>
+                    <span class="text-xs font-mono uppercase opacity-70">Components</span>
+                </div>
+                <div class="group">
+                    <h2
+                        class="text-4xl md:text-5xl font-medium tracking-tighter group-hover:scale-110 transition-transform origin-right">
+                        ∞</h2>
+                    <span class="text-xs font-mono uppercase opacity-70">Possibilities</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Infinite Marquee Transition -->
+        <div class="border-b border-neutral-300 bg-surface py-4 overflow-hidden">
+            <div class="marquee-container opacity-60">
+                <div class="marquee-content items-center">
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Minimalism meets
+                        functionality</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Glassmorphism UI Patterns</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Fluid Animations</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">High Contrast Hierarchy</span>
+                </div>
+                <div class="marquee-content items-center">
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Minimalism meets
+                        functionality</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Glassmorphism UI Patterns</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">Fluid Animations</span>
+                    <iconify-icon icon="solar:star-fall-line-duotone" class="text-lg"></iconify-icon>
+                    <span class="text-xs font-mono uppercase tracking-widest mx-10">High Contrast Hierarchy</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==============================================
+             2. TYPOGRAPHY
+        =============================================== -->
+        <section id="typography" class="border-b border-neutral-300">
+            <div class="grid grid-cols-1 md:grid-cols-12">
+                <div
+                    class="col-span-1 border-b md:border-b-0 md:border-r border-neutral-300 bg-surface p-8 md:col-span-4 flex flex-col justify-between reveal">
+                    <div>
+                        <span class="text-xs font-mono uppercase text-neutral-400 block mb-2">01. Foundations</span>
+                        <h2 class="text-4xl font-semibold tracking-tighter">Typography</h2>
+                    </div>
+                    <div class="mt-12 text-sm text-neutral-600 space-y-4">
+                        <p><strong>Primary:</strong> Inter (Sans-serif)<br><span class="opacity-70">Weights: 300, 400,
+                                500, 600, 700, 800</span></p>
+                        <p><strong>Secondary/Data:</strong> JetBrains Mono<br><span class="opacity-70">Weights: 400,
+                                700</span></p>
+                        <p><strong>Strategy:</strong> Local fallback, CDN prioritized. Tight letter-spacing for display,
+                            relaxed for body text.</p>
+                    </div>
+                </div>
+
+                <div class="col-span-1 md:col-span-8">
+                    <!-- Headings -->
+                    <div class="border-b border-neutral-300 p-8 reveal delay-100 group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <span class="text-xs font-mono text-neutral-400 uppercase">Display / H1</span>
+                            <span class="text-xs font-mono text-neutral-400">8rem / -0.05em / 800</span>
+                        </div>
+                        <h1
+                            class="text-6xl md:text-8xl font-extrabold tracking-tighter text-ink transition-all group-hover:tracking-tight">
+                            Heading 1</h1>
+                    </div>
+
+                    <div class="border-b border-neutral-300 p-8 reveal delay-200 group">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <span class="text-xs font-mono text-neutral-400 uppercase">Title / H2</span>
+                            <span class="text-xs font-mono text-neutral-400">4.5rem / -0.02em / 600</span>
+                        </div>
+                        <h2
+                            class="text-5xl md:text-7xl font-semibold tracking-tight text-ink transition-all group-hover:text-accent-dark">
+                            Heading 2</h2>
+                    </div>
+
+                    <div class="border-b border-neutral-300 p-8 reveal delay-300">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <span class="text-xs font-mono text-neutral-400 uppercase">Subtitle / H3 to H6</span>
+                            <span class="text-xs font-mono text-neutral-400">Var / Normal / 500</span>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-4xl md:text-5xl font-medium tracking-tight">Heading 3: Sub-section title
+                            </h3>
+                            <h4 class="text-2xl md:text-3xl font-medium">Heading 4: Component title</h4>
+                            <h5 class="text-xl font-medium">Heading 5: Card title</h5>
+                            <h6 class="text-sm font-bold uppercase tracking-widest text-neutral-500">Heading 6: Label
+                            </h6>
+                        </div>
+                    </div>
+
+                    <!-- Body & Helpers -->
+                    <div class="p-8 reveal delay-400 bg-surface/50">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <span class="text-xs font-mono text-neutral-400 uppercase block mb-4">Body Text
+                                    (body-lg, body, body-sm)</span>
+                                <p class="text-lg leading-relaxed mb-4"><strong>Body Large:</strong> This design system
+                                    bridges the gap between chaotic creative coding and structured enterprise
+                                    interfaces. It emphasizes negative space.</p>
+                                <p class="text-base leading-relaxed text-neutral-700 mb-4"><strong>Body
+                                        Regular:</strong> By prioritizing stark contrasts and unexpected reveals, we
+                                    maintain user intrigue while delivering necessary functional elements.</p>
+                                <p class="text-sm text-neutral-500"><strong>Body Small:</strong> Use for secondary
+                                    descriptors and minor visual notes.</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono text-neutral-400 uppercase block mb-4">Mono (Captions &
+                                    Labels)</span>
+                                <p class="font-mono text-sm text-ink mb-2"><strong>SYSTEM.LOG:</strong> Value
+                                    initialized.</p>
+                                <p class="font-mono text-xs text-neutral-500 uppercase tracking-widest mb-2">Component
+                                    status: Interactive</p>
+                                <p class="font-mono text-[10px] text-accent-dark uppercase tracking-widest">AA Contrast
+                                    Verified</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+             3. COLOR SYSTEM
+        =============================================== -->
+        <section id="colors" class="border-b border-neutral-300">
+            <div class="grid grid-cols-1 md:grid-cols-12 border-b border-neutral-300">
+                <div
+                    class="col-span-1 border-b md:border-b-0 md:border-r border-neutral-300 p-8 md:col-span-4 bg-surface reveal">
+                    <span class="text-xs font-mono uppercase text-neutral-400 block mb-2">02. Value</span>
+                    <h2 class="text-4xl font-semibold tracking-tighter">Color System</h2>
+                    <p class="mt-6 text-sm text-neutral-600">A monochrome foundation with high-contrast acid green
+                        accents. Tailored for bright, airy interfaces with 'mix-blend' capabilities.</p>
+                </div>
+
+                <div class="col-span-1 md:col-span-8 p-8 grid grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Primary Neutral (Base) -->
+                    <div
+                        class="reveal border border-neutral-200 rounded-lg overflow-hidden group hover:shadow-xl transition-shadow">
+                        <div
+                            class="h-32 bg-[#EAEAE5] w-full border-b border-neutral-200 flex items-center justify-center pointer-events-none group-hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4 bg-white">
+                            <h4 class="font-bold text-sm">Base / Background</h4>
+                            <div class="mt-2 space-y-1 text-xs font-mono text-neutral-500 uppercase">
+                                <p>HEX: #EAEAE5</p>
+                                <p>Role: primary-bg</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ink (Text) -->
+                    <div
+                        class="reveal delay-100 border border-neutral-200 rounded-lg overflow-hidden group hover:shadow-xl transition-shadow">
+                        <div
+                            class="h-32 bg-[#1C1C1C] w-full border-b border-neutral-200 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4 bg-white">
+                            <h4 class="font-bold text-sm">Ink / Primary Text</h4>
+                            <div class="mt-2 space-y-1 text-xs font-mono text-neutral-500 uppercase">
+                                <p>HEX: #1C1C1C</p>
+                                <p>Role: primary-text</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Surface -->
+                    <div
+                        class="reveal delay-200 border border-neutral-200 rounded-lg overflow-hidden group hover:shadow-xl transition-shadow">
+                        <div
+                            class="h-32 bg-[#F4F4F0] w-full border-b border-neutral-200 group-hover:scale-105 transition-transform">
+                        </div>
+                        <div class="p-4 bg-white">
+                            <h4 class="font-bold text-sm">Surface / Cards</h4>
+                            <div class="mt-2 space-y-1 text-xs font-mono text-neutral-500 uppercase">
+                                <p>HEX: #F4F4F0</p>
+                                <p>Role: secondary-bg</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accent Acid -->
+                    <div
+                        class="reveal delay-300 border border-neutral-200 rounded-lg overflow-hidden group hover:shadow-xl transition-shadow">
+                        <div
+                            class="h-32 bg-[#ccff00] w-full border-b border-neutral-200 flex items-center justify-center font-bold text-black group-hover:scale-105 transition-transform text-2xl">
+                            ⚡</div>
+                        <div class="p-4 bg-white">
+                            <h4 class="font-bold text-sm">Acid / Accent</h4>
+                            <div class="mt-2 space-y-1 text-xs font-mono text-neutral-500 uppercase">
+                                <p>HEX: #CCFF00</p>
+                                <p>Role: highlight / glow</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Shadows -->
+                    <div class="reveal delay-400 border border-neutral-200 rounded-lg overflow-hidden relative">
+                        <div class="h-32 w-full flex bg-white">
+                            <div class="flex-1 bg-red-500"></div>
+                            <div class="flex-1 bg-green-500"></div>
+                            <div class="flex-1 bg-amber-500"></div>
+                        </div>
+                        <div class="p-4 bg-white border-t border-neutral-200">
+                            <h4 class="font-bold text-sm">Feedback</h4>
+                            <div class="mt-2 space-y-1 text-xs font-mono text-neutral-500 uppercase">
+                                <p>Error / Success / Warn</p>
+                                <p>Opacity variants used</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+             4. COMPONENTS & ANIMATIONS
+        =============================================== -->
+        <section id="components" class="border-b border-neutral-300">
+            <!-- Header -->
+            <div class="p-8 border-b border-neutral-300 bg-surface reveal">
+                <span class="text-xs font-mono uppercase text-neutral-400 block mb-2">03. Interface</span>
+                <h2 class="text-4xl font-semibold tracking-tighter">UI Components</h2>
+                <h1 class="text-reveal-wrapper inline-reveal mt-2">
+                    <span class="text-reveal-content delay-200 text-lg text-neutral-500 font-mono">Animated, responsive,
+                        scalable.</span>
+                </h1>
+            </div>
+
+            <!-- BUTTONS & INPUTS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 border-b border-neutral-300">
+
+                <!-- Buttons Area -->
+                <div
+                    class="p-8 md:p-12 border-b md:border-b-0 md:border-r border-neutral-300 reveal w-full overflow-hidden">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-ink mb-10">Buttons & Actions</h3>
+
+                    <div class="flex flex-col gap-8 items-start">
+
+                        <!-- Glow Beam Button -->
+                        <div class="flex items-center gap-6">
+                            <button class="btn-beam rounded-full p-[2px]">
+                                <span class="btn-beam-bg rounded-full"></span>
+                                <span
+                                    class="btn-beam-inner flex items-center gap-2 px-8 py-3 rounded-full text-sm font-medium transition-all group">
+                                    Primary Action
+                                    <iconify-icon icon="solar:arrow-right-line-duotone"
+                                        class="text-lg group-hover:translate-x-1 transition-transform"></iconify-icon>
+                                </span>
+                            </button>
+                            <div class="text-xs font-mono text-neutral-400">Beam Stroke (Hover)</div>
+                        </div>
+
+                        <!-- Dark Fill Button -->
+                        <div class="flex items-center gap-6">
+                            <button
+                                class="px-8 py-3 bg-ink text-white rounded-full text-sm font-medium hover:bg-neutral-800 transition-transform hover:-translate-y-1 shadow-lg shadow-black/10 active:scale-95 flex items-center gap-2 group">
+                                Save Settings
+                                <iconify-icon icon="solar:diskette-bold-duotone"
+                                    class="text-lg text-accent-dark"></iconify-icon>
+                            </button>
+                            <div class="text-xs font-mono text-neutral-400">Solid / Float</div>
+                        </div>
+
+                        <!-- Outline Glass Button -->
+                        <div class="flex items-center gap-6">
+                            <button
+                                class="px-8 py-3 border border-ink/20 rounded-full text-sm font-medium hover:bg-white hover:border-ink/50 backdrop-blur-sm transition-all active:scale-95 flex items-center gap-2">
+                                <iconify-icon icon="solar:refresh-line-duotone" class="text-lg"></iconify-icon>
+                                Secondary
+                            </button>
+                            <div class="text-xs font-mono text-neutral-400">Outline / Glass</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inputs & Badges -->
+                <div
+                    class="p-8 md:p-12 reveal delay-200 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center relative group">
+                    <!-- Overlay to keep readable -->
+                    <div
+                        class="absolute inset-0 bg-base/80 backdrop-blur-sm group-hover:backdrop-blur-md transition-all">
+                    </div>
+
+                    <div class="relative z-10 w-full max-w-sm">
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-ink mb-10">Inputs & Badges</h3>
+
+                        <!-- Input -->
+                        <div class="mb-6 relative group-hover-tooltip">
+                            <label class="block text-xs font-mono text-neutral-600 mb-2 font-bold uppercase">Email
+                                Address</label>
+                            <div class="relative">
+                                <input type="email" placeholder="hello@design.com"
+                                    class="w-full px-4 py-3 rounded-lg input-glass text-sm">
+                                <iconify-icon icon="solar:letter-line-duotone"
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-xl"></iconify-icon>
+                            </div>
+                            <!-- Tooltip attached to input area -->
+                            <div
+                                class="tooltip-content absolute -top-10 right-0 bg-ink text-white text-xs py-1 px-3 rounded font-mono pointer-events-none">
+                                Focus to glow</div>
+                        </div>
+
+                        <!-- Badges -->
+                        <div class="flex flex-wrap gap-3">
+                            <span
+                                class="px-3 py-1 bg-white border border-neutral-200 rounded-full text-xs font-bold text-ink shadow-sm flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Active
+                            </span>
+                            <span
+                                class="px-3 py-1 bg-ink text-accent-dark rounded-full text-xs font-mono font-bold shadow-sm">
+                                PRO FEATURE
+                            </span>
+                            <span
+                                class="px-3 py-1 bg-transparent border border-neutral-400 rounded-full text-xs text-neutral-600 backdrop-blur-md">
+                                Neutral Tag
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARDS & FLASHLIGHT EFFECTS -->
+            <div class="p-8 md:p-12 border-b border-neutral-300">
+                <h3 class="text-sm font-bold uppercase tracking-widest text-ink mb-10 text-center">Interactive Cards
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Flashlight Card 1 -->
+                    <div class="flashlight-card h-72 rounded-2xl p-8 flex flex-col justify-between reveal cursor-pointer group"
+                        onmousemove="handleFlashlight(event, this)">
+                        <div
+                            class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                            <iconify-icon icon="solar:magic-stick-3-bold-duotone"
+                                class="text-2xl text-ink"></iconify-icon>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold tracking-tight mb-2">Hover Effects</h4>
+                            <p class="text-sm text-neutral-500">A radial gradient matches cursor position to create an
+                                exploratory illumination effect.</p>
+                        </div>
+                    </div>
+
+                    <!-- Flashlight Card 2 (Darker variation mapped locally) -->
+                    <div class="flashlight-card h-72 rounded-2xl p-8 flex flex-col justify-between reveal delay-100 cursor-pointer group !bg-ink text-white"
+                        onmousemove="handleFlashlightDark(event, this)">
+                        <!-- Internal CSS specifically for the dark card flashlight -->
+                        <style>
+                            .dark-flash::before {
+                                background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.15), transparent 40%) !important;
+                                mix-blend-mode: screen;
+                            }
+                        </style>
+                        <div
+                            class="w-12 h-12 bg-neutral-800 rounded-full flex items-center justify-center group-hover:bg-accent group-hover:text-black transition-colors">
+                            <iconify-icon icon="solar:chart-square-bold-duotone" class="text-2xl"></iconify-icon>
+                        </div>
+                        <div class="z-10 relative">
+                            <h4 class="text-2xl font-bold tracking-tight mb-2">Metrics Tracking</h4>
+                            <p class="text-sm text-neutral-400 font-mono">Dark mode component variant demonstrating
+                                visual hierarchy inversion.</p>
+                        </div>
+                        <!-- Injecting class via JS below or keeping style local -->
+                    </div>
+
+                    <!-- Layout Card -->
+                    <div
+                        class="h-72 rounded-2xl p-8 flex flex-col justify-between reveal delay-200 border border-neutral-300 bg-surface overflow-hidden relative group">
+                        <div
+                            class="absolute inset-x-0 bottom-0 h-1bg-ink bg-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left">
+                        </div>
+                        <div class="flex justify-between items-start z-10">
+                            <span class="text-xs font-mono uppercase text-neutral-500">Project 01</span>
+                            <iconify-icon icon="solar:arrow-right-up-linear"
+                                class="text-2xl text-neutral-400 group-hover:text-ink transition-colors group-hover:translate-x-1 group-hover:-translate-y-1"></iconify-icon>
+                        </div>
+                        <div class="z-10">
+                            <h4 class="text-3xl font-medium tracking-tight group-hover:tracking-tighter transition-all">
+                                Nova System</h4>
+                        </div>
+                        <!-- Image peek -->
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400"
+                            class="absolute -bottom-10 -right-10 w-40 h-40 object-cover rounded-xl shadow-xl opacity-20 group-hover:-translate-y-6 group-hover:-translate-x-6 group-hover:opacity-100 transition-all duration-500 pointer-events-none grayscale">
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL & NAVBAR DEMO -->
+            <div class="p-8 md:p-12 flex flex-col items-center bg-zinc-100 relative overflow-hidden">
+                <!-- Background animated icon -->
+                <iconify-icon icon="solar:maximize-square-minimalistic-line-duotone"
+                    class="absolute text-[30rem] text-neutral-200/50 -right-20 -bottom-20 animate-spin-slow pointer-events-none"></iconify-icon>
+
+                <h3 class="text-sm font-bold uppercase tracking-widest text-ink mb-10 z-10">Dialog Modal</h3>
+
+                <div
+                    class="w-full max-w-lg bg-white rounded-2xl shadow-2xl shadow-black/5 border border-neutral-100 p-8 reveal z-10 relative group">
+                    <button
+                        class="absolute top-6 right-6 text-neutral-400 hover:text-ink transition-colors hover:rotate-90">
+                        <iconify-icon icon="solar:close-circle-bold-duotone" class="text-2xl"></iconify-icon>
+                    </button>
+
+                    <div
+                        class="w-12 h-12 bg-accent-dark/10 text-accent-dark rounded-full flex items-center justify-center mb-6">
+                        <iconify-icon icon="solar:shield-warning-bold-duotone" class="text-2xl"></iconify-icon>
+                    </div>
+
+                    <h4 class="text-2xl font-bold mb-2">Authenticate Action</h4>
+                    <p class="text-neutral-500 text-sm mb-8 leading-relaxed">Proceeding requires system verification.
+                        This modal showcases the glass input fields alongside bold typography and dual button
+                        structures.</p>
+
+                    <div class="space-y-4">
+                        <input type="password" placeholder="••••••••"
+                            class="w-full px-4 py-3 rounded-lg bg-surface border border-neutral-200 focus:bg-white focus:border-ink outline-none transition-colors text-center font-mono tracking-[0.5em]">
+
+                        <div class="flex gap-4">
+                            <button
+                                class="flex-1 py-3 rounded-xl border border-neutral-200 text-sm font-medium hover:bg-surface transition-colors">Cancel</button>
+                            <button
+                                class="flex-1 py-3 rounded-xl bg-ink text-white text-sm font-medium hover:bg-neutral-800 transition-colors shadow-lg active:scale-95">Verify</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==============================================
+             5. ICONS
+        =============================================== -->
+        <section id="icons" class="border-b border-neutral-300">
+            <div class="p-8 md:p-12 border-b border-neutral-300 bg-surface reveal">
+                <span class="text-xs font-mono uppercase text-neutral-400 block mb-2">04. Assets</span>
+                <h2 class="text-4xl font-semibold tracking-tighter">Iconography</h2>
+                <p class="mt-4 text-sm text-neutral-600 max-w-xl">Utilizing Solar Icons suite. Focused on 'bold-duotone'
+                    and 'line-duotone' for sharp, modern appearances.</p>
+            </div>
+
+            <div class="p-8 md:p-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+                <!-- Icon block template -->
+                <div class="flex flex-col items-center gap-4 group reveal">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:widget-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">Widget</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 group reveal delay-100">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:chart-2-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">Analytics</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 group reveal delay-200">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:code-square-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">Structure</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 group reveal delay-300">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:camera-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">Media</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 group reveal delay-400">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:layers-minimalistic-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">Layers</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-4 group reveal delay-500">
+                    <div
+                        class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-neutral-100 group-hover:-translate-y-2 group-hover:shadow-md transition-all">
+                        <iconify-icon icon="solar:settings-bold-duotone"
+                            class="text-3xl text-ink group-hover:text-accent-dark transition-colors"></iconify-icon>
+                    </div>
+                    <span class="text-[10px] font-mono text-neutral-400 uppercase">System</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-ink text-white p-8 md:p-12 text-center overflow-hidden relative">
+            <h1
+                class="text-[15vw] leading-none font-bold tracking-tighter opacity-5 whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
+                SYS.RELÓGIO
+            </h1>
+            <div class="relative z-10 flex flex-col items-center">
+                <iconify-icon icon="solar:infinity-bold-duotone"
+                    class="text-accent-dark text-4xl mb-6 spin-slow"></iconify-icon>
+                <p class="text-sm font-mono text-neutral-400">Constructed carefully by AI. Monolithic approach with
+                    creative flares.</p>
+                <div class="mt-8 flex gap-4">
+                    <button
+                        class="w-10 h-10 rounded-full border border-neutral-700 flex items-center justify-center hover:bg-white hover:text-black transition-colors">
+                        <iconify-icon icon="solar:arrow-up-line-duotone"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Intersection Observer for Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Trigger text reveals strictly when parent is visible
+                        const textWrappers = entry.target.querySelectorAll('.text-reveal-wrapper, h1, h2');
+                        textWrappers.forEach(w => w.classList.add('reveal-active'));
+
+                        if (entry.target.tagName === 'H1' || entry.target.id === 'hero-title') {
+                            entry.target.classList.add('reveal-active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // Hero Title manual trigger for immediacy
+            setTimeout(() => {
+                const heroTitle = document.getElementById('hero-title');
+                if (heroTitle) heroTitle.classList.add('reveal-active');
+            }, 300);
+
+            // Carousel Image fading
+            const slides = document.querySelectorAll('.carousel-bg');
+            let currentSlide = 0;
+            if (slides.length > 1) {
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 6000);
+            }
+
+            // Add custom dark flashlight class to specific flashlight-card
+            document.querySelectorAll('.flashlight-card.\\!bg-ink').forEach(card => card.classList.add('dark-flash'));
+        });
+
+        // Flashlight Logic
+        function handleFlashlight(event, element) {
+            const rect = element.getBoundingClientRect();
+            element.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`);
+            element.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
+        }
+        function handleFlashlightDark(event, element) {
+            const rect = element.getBoundingClientRect();
+            element.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`);
+            element.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
+        }
+    </script>
+</body>
+
+</html>

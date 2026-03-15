@@ -1,0 +1,328 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Barra de Rolagem Minimalista Apple Style */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* A altura de hero-container dita o tempo do efeito parallax */
+.hero-container {
+    position: relative;
+    height: 200vh;
+    /* Altura para scrollar e apreciar o parallax */
+}
+
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+#bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 1;
+    transform: scale(1.15);
+    /* Ponto de partida maior para o efeito Parallax */
+    will-change: transform;
+    opacity: 0.8;
+    /* Mais brilho do vídeo base */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Degrade duplo: Protege o texto e cria cantos cinematográficos */
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.95) 100%);
+    z-index: 2;
+}
+
+.content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Tema Clássico Premium */
+.tagline {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #d4af37;
+    /* Dourado Clássico */
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(20px);
+}
+
+/* Lettering Menor e Elegante */
+.headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.01em;
+
+    /* Degradê Ouro Metálico Refinado */
+    background: linear-gradient(to right bottom, #ffffff 10%, #fff8e7 40%, #d4af37 70%, #996515 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 2.5rem;
+    max-width: 1100px;
+
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(80px) scale(0.9);
+}
+
+.headline em {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    padding-right: 0.05em;
+}
+
+.subheadline {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    font-weight: 300;
+    color: #e7e5e4;
+    max-width: 500px;
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin-bottom: 4rem;
+
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.buttons-wrapper {
+    display: flex;
+    gap: 2rem;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.btn {
+    padding: 1.2rem 3.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+}
+
+.btn-primary:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #d4af37;
+    border: 1px solid transparent;
+    padding: 1.2rem 0;
+}
+
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    bottom: 20%;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: #d4af37;
+    transition: width 0.4s ease;
+}
+
+.btn-secondary:hover::after {
+    width: 100%;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 60px;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    opacity: 0;
+    z-index: 3;
+    color: #a8a29e;
+}
+
+.scroll-line {
+    width: 80px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.scroll-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: #d4af37;
+    animation: scroll-anim 2.5s infinite cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes scroll-anim {
+    0% {
+        left: -100%;
+    }
+
+    50% {
+        left: 0%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Terceira Dobra: Galeria Expansível */
+.coll-item {
+    will-change: flex, transform;
+    overflow: hidden;
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .coll-item:hover {
+        flex: 3;
+    }
+}
+
+.coll-content {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.coll-item:hover .coll-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.coll-bg-zoom {
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.coll-item:hover .coll-bg-zoom {
+    transform: scale(1.05);
+}
+
+/* Quarta Dobra: Efeito Glow e Flashlight do Gemini Layout */
+.glow-card {
+    background: rgba(255, 255, 255, 0.01);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glow-card::before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    background: radial-gradient(
+        600px circle at var(--mouse-x) var(--mouse-y),
+        rgba(212, 175, 55, 0.15),
+        transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.glow-card:hover::before {
+    opacity: 1;
+}
+
+/* Shimmer Beam Animation Layer */
+.beam-layer {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.glow-card:hover .beam-layer {
+    opacity: 1;
+}
+
+@keyframes beam-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.beam-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300%;
+    height: 300%;
+    background: conic-gradient(from 0deg, transparent 0 340deg, #d4af37 360deg);
+    animation: beam-spin 3s linear infinite;
+}

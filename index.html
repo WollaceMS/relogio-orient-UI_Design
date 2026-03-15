@@ -1,328 +1,331 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relógio Premium - A Precisão Redefinida</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    
-    <!-- Tailwind -->
+    <meta name="description" content="Orient Watches - A precisão redefinida. Conheça nossa coleção de relógios automáticos e clássicos com engenharia Japonesa de alta qualidade.">
+    <title>Orient - A Precisão Clássica</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- GSAP & ScrollTrigger -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <!-- Lenis -->
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+        rel="stylesheet">
 
-    <!-- SplitType -->
-    <script src="https://unpkg.com/split-type"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        base: '#EAEAE5',
-                        surface: '#F4F4F0',
-                        ink: '#1C1C1C',
-                        neutral: {
-                            100: '#F5F5F5',
-                            200: '#E5E5E5',
-                            300: '#D4D4D4',
-                            400: '#A3A3A3',
-                            500: '#737373',
-                            800: '#262626',
-                            900: '#171717',
-                        },
-                        accent: {
-                            DEFAULT: '#ccff00',
-                            dark: '#A3CC00'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #EAEAE5;
-            color: #1C1C1C;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Lenis smooth scrolling styles */
-        html.lenis {
-            height: auto;
-        }
-        .lenis.lenis-smooth {
-            scroll-behavior: auto;
-        }
-        .lenis.lenis-smooth [data-lenis-prevent] {
-            overscroll-behavior: contain;
-        }
-        .lenis.lenis-stopped {
-            overflow: hidden;
-        }
-        .lenis.lenis-scrolling iframe {
-            pointer-events: none;
-        }
-
-        /* Animations */
-        .reveal-mask {
-            overflow: hidden;
-            display: block;
-        }
-        
-        .char {
-            transform: translateY(115%);
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* Buttons */
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-            background: #1C1C1C;
-            color: white;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-primary:hover {
-            box-shadow: 0 10px 30px -10px rgba(28,28,28,0.5);
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(28,28,28,0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-secondary:hover {
-            background: white;
-            border-color: rgba(28,28,28,0.5);
-            transform: translateY(-2px);
-        }
-
-        /* Video container mapping for scroll */
-        .scroll-container {
-            height: 400vh; /* Giving space to scroll for video duration */
-        }
-        .hero-sticky {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Glassmorphism elements */
-        .glass-badge {
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="antialiased selection:bg-accent selection:text-ink">
 
-    <!-- Scroll Context -->
-    <div class="scroll-container">
-        
-        <!-- Sticky Hero Section -->
-        <div class="hero-sticky overflow-hidden" id="hero">
+<body>
+
+    <!-- Header Clássico baseado no Design System -->
+    <header
+        class="fixed w-full z-[100] bg-transparent top-0 transition-transform duration-500"
+        id="navbar">
+        <div class="flex justify-between items-center px-6 py-5 max-w-[1400px] mx-auto w-full">
+            <!-- Logo Orient -->
+            <div class="flex items-center gap-3 cursor-pointer">
+                <div class="flex flex-col items-center">
+                    <svg fill="#d4af37" viewBox="0 0 100 100" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5 L90 20 L90 60 C90 80 50 95 50 95 C50 95 10 80 10 60 L10 20 Z" fill="none" stroke="#d4af37" stroke-width="6"/>
+                        <path d="M50 15 L80 28 L80 58 C80 75 50 85 50 85 C50 85 20 75 20 58 L20 28 Z" fill="#b91c1c"/>
+                        <text x="50" y="66" font-family="'Playfair Display', serif" font-size="38" font-weight="bold" fill="#d4af37" text-anchor="middle">O</text>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif text-2xl font-bold tracking-[0.15em] text-white leading-none mt-1" style="font-family: 'Playfair Display', serif;">ORIENT</span>
+                </div>
+            </div>
             
-            <div class="max-w-[1400px] w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-12 relative z-10">
+            <!-- Mid Navigation -->
+            <nav
+                class="hidden md:flex items-center gap-10 text-[0.65rem] uppercase tracking-[0.2em] text-[#e7e5e4]">
+                <a href="#collections" class="hover:text-[#d4af37] transition-colors duration-300">Coleções</a>
+                <a href="#features" class="hover:text-[#d4af37] transition-colors duration-300">Universo Orient</a>
+                <a href="#legacy" class="hover:text-[#d4af37] transition-colors duration-300">Legado</a>
+                <a href="templates/design_system_relogio.html" class="hover:text-[#d4af37] transition-colors duration-300">Design System</a>
+            </nav>
+
+            <!-- Action Button / Search -->
+            <div class="flex items-center gap-6">
+                <!-- Search Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white hover:text-[#d4af37] cursor-pointer transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103 10.5a7.5 7.5 0 0013.65 6.15z" />
+                </svg>
                 
-                <!-- LEFT SIDE: Text Content -->
-                <div class="flex flex-col justify-center h-full pt-20 lg:pt-0 max-w-xl left-content">
+                <button class="hidden md:block px-6 py-2 border border-white/30 text-white text-[0.65rem] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300">
+                    Boutiques
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-container" id="hero-trigger">
+        <div class="sticky-wrapper">
+
+            <!-- Animação fluida de fundo incrivelmente suave: autoplay e loop (Apple Style) -->
+            <video id="bg-video" autoplay loop muted playsinline preload="auto">
+                <source src="assets/video/videor.mp4" type="video/mp4">
+            </video>
+
+            <div class="overlay"></div>
+
+            <div class="content">
+                <div class="tagline">Geneve, 1884</div>
+                <h1 class="headline">A precisão<br><em>redefinida.</em></h1>
+                <p class="subheadline">Engenharia primorosa encontra-se com o peso do legado clássico em um dispositivo
+                    feito para transcender o próprio tempo.</p>
+                <div class="buttons-wrapper">
+                    <button class="btn btn-primary">Adquirir Coleção</button>
+                    <button class="btn btn-secondary">A História</button>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <span
+                    style="font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3em;">Discover</span>
+                <div class="scroll-line"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Segunda Dobra: Calibre Excepcional (Inspirado na Referência The Diplomatic) -->
+    <section id="features" class="relative z-10 w-full min-h-[120vh] bg-[#050505] overflow-hidden flex flex-col justify-center py-24 px-6 md:px-10 lg:px-20 border-t border-white/5">
+        
+        <!-- Elementos de Fundo - Lighting Atmospheric -->
+        <div class="absolute inset-0 pointer-events-none">
+            <!-- Glow dourado suave acompanhando a imagem -->
+            <div class="absolute top-[30%] left-[60%] w-[600px] h-[600px] bg-[#d4af37]/10 rounded-full blur-[120px] mix-blend-screen visual-flare"></div>
+            <div class="absolute bottom-[0%] right-[10%] w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px] mix-blend-screen"></div>
+        </div>
+
+        <div class="max-w-[1500px] w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center relative z-20">
+            
+            <!-- Left Card: Inspirado the Diplomatic (Glassmorphism & Border) -->
+            <div class="feature-card lg:col-span-5 relative w-full p-10 md:p-14 rounded-3xl border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+                
+                <!-- Ícone Minimalista (Referência do Card) -->
+                <div class="mb-10 w-8 h-8 flex items-center justify-center text-[#d4af37]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                    </svg>
+                </div>
+
+                <h2 class="feature-title text-[2.75rem] md:text-[3.5rem] font-medium mb-6 leading-[1.1]" style="font-family: 'Playfair Display', serif; background: linear-gradient(to right bottom, #ffffff 10%, #fff8e7 40%, #d4af37 70%, #996515 100%); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.02em;">
+                    Sinfonia da<br><em style="font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; padding-right: 0.1em;">Engenharia.</em>
+                </h2>
+                
+                <p class="feature-desc text-[#e7e5e4] text-base md:text-[1.05rem] font-light leading-[1.8] mb-12" style="font-family: 'Inter', sans-serif; letter-spacing: 0.02em;">
+                    Cada peça Orient é fruto de uma rede proprietária de micro-manufatura que transcende gerações. Oferecemos mais do que horas exatas; entregamos pulsações de um legado inabalável. Visões em tempo real do movimento onde a tradição se funde à mais alta tecnologia do século.
+                </p>
+
+                <div class="w-full h-px bg-white/10 mb-10 feature-line"></div>
+
+                <div class="flex items-center gap-16 md:gap-20">
+                    <div class="feature-stat">
+                        <span class="block text-[2.5rem] font-normal text-white mb-2" style="font-family: 'Playfair Display', serif;">1950</span>
+                        <span class="block text-[0.65rem] uppercase tracking-widest text-[#a8a29e] font-medium text-balance">Fundação no Japão</span>
+                    </div>
+                    <div class="feature-stat">
+                        <span class="block text-[2.5rem] font-normal text-white mb-2" style="font-family: 'Playfair Display', serif;">100%</span>
+                        <span class="block text-[0.65rem] uppercase tracking-widest text-[#a8a29e] font-medium text-balance">Movimento In-House</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Visual: Generated Watch Image -->
+            <div class="lg:col-span-7 flex justify-center items-center relative w-full min-h-[500px] h-full">
+                <!-- Imagem gerada do relógio levitando -->
+                <img src="assets/img/orient_watch_generated.png" alt="Orient Masterpiece Watch" class="visual-img object-contain w-[90%] md:w-[80%] max-h-[800px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] scale-110" />
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Terceira Dobra: Coleções Exclusivas (Interactive Expanding Flex Gallery) -->
+    <section id="collections" class="relative z-10 w-full min-h-screen bg-[#020202] py-24 px-6 md:px-10 lg:px-20 overflow-hidden">
+        <!-- Partículas de Fundo Subtle -->
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30 pointer-events-none"></div>
+
+        <div class="max-w-[1400px] w-full mx-auto relative z-20 relative">
+            <!-- Header Título da Galeria -->
+            <div class="coll-header mb-16 max-w-2xl">
+                <span class="block text-[0.65rem] uppercase tracking-[0.3em] text-[#d4af37] font-medium mb-4">Portfolio Exclusivo</span>
+                <h2 class="text-[3rem] md:text-[4.5rem] font-normal leading-[1.05] text-white mb-6" style="font-family: 'Playfair Display', serif;">
+                    Ovos de <em style="font-family: 'Playfair Display', serif; font-style: italic; color: #a8a29e;">Ouro.</em>
+                </h2>
+                <p class="text-[#e7e5e4] text-base md:text-lg font-light leading-relaxed mb-6" style="font-family: 'Inter', sans-serif;">
+                    Da extrema profundidade do oceano à fineza do vintage metropolitano. Conheça as três linhas-mestras que moldam nossa história.
+                </p>
+                <button class="flex items-center gap-3 text-white text-xs font-mono uppercase tracking-widest hover:text-[#d4af37] transition-colors group">
+                    Explorar Catálogo Completo
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:translate-x-2 transition-transform">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Galeria Expansível Flexbox -->
+            <div class="coll-gallery flex flex-col lg:flex-row w-full h-[700px] gap-4">
+                
+                <!-- Card 1: Classic -->
+                <div class="coll-item relative flex-1 min-h-[150px] lg:min-h-0 bg-[#0a0a0a] rounded-2xl overflow-hidden cursor-pointer group shadow-2xl border border-white/5">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                    <img src="assets/img/orient_collection_classic_1773523121145.png" alt="Orient Bambino Classic" class="coll-bg-zoom absolute inset-0 w-full h-full object-cover origin-center scale-110">
                     
-                    <div class="fade-up mb-6">
-                        <span class="glass-badge px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest text-neutral-600 inline-flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-ink animate-pulse"></span>
-                            Edição Limitada
-                        </span>
+                    <!-- Visible when NOT hovered (Vertical Title) -->
+                    <div class="absolute inset-x-0 inset-y-0 flex items-center justify-center z-10 lg:group-hover:opacity-0 transition-opacity duration-300">
+                        <h3 class="text-white/40 text-2xl tracking-[0.5em] uppercase font-light whitespace-nowrap rotate-[-90deg] hidden lg:block" style="font-family: 'Inter', sans-serif;">Bambino</h3>
+                        <h3 class="text-white text-2xl tracking-[0.1em] uppercase block lg:hidden" style="font-family: 'Playfair Display', serif;">Bambino Classic</h3>
                     </div>
 
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.1] text-ink mb-6" id="hero-headline">
-                        A precisão redefinida.
-                    </h1>
-                    
-                    <p class="text-lg md:text-xl text-neutral-600 leading-relaxed mb-10 fade-up pr-4 md:pr-0">
-                        Engenharia suíça encontra design contemporâneo em um relógio feito para quem exige perfeição, combinando materiais premium com tecnologia de vanguarda.
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row items-center gap-4 fade-up">
-                        <button class="btn-primary w-full sm:w-auto px-10 py-4 rounded-full text-sm font-medium flex items-center justify-center gap-3 group">
-                            Comprar agora
-                            <iconify-icon icon="solar:arrow-right-line-duotone" class="text-lg group-hover:translate-x-1 transition-transform"></iconify-icon>
-                        </button>
-                        
-                        <button class="btn-secondary w-full sm:w-auto px-10 py-4 rounded-full text-sm font-medium flex items-center justify-center gap-3 group">
-                            Explorar detalhes
-                            <iconify-icon icon="solar:play-bold-duotone" class="text-lg group-hover:scale-110 transition-transform"></iconify-icon>
-                        </button>
-                    </div>
-
-                    <!-- Scroll indicator -->
-                    <div class="absolute bottom-12 left-6 fade-up">
-                        <div class="flex items-center gap-3 text-xs font-mono uppercase text-neutral-500 tracking-widest">
-                            <div class="w-[1px] h-12 bg-neutral-300 relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-full h-1/2 bg-ink scroll-indicator"></div>
-                            </div>
-                            <span class="rotate-180" style="writing-mode: vertical-rl;">Role para descobrir</span>
-                        </div>
+                    <!-- Visible on Hover (Details) -->
+                    <div class="coll-content absolute bottom-0 left-0 w-full p-8 md:p-10 z-20 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end">
+                        <span class="text-[#d4af37] text-[0.6rem] font-mono uppercase tracking-[0.2em] mb-2">Tradição & Elegância</span>
+                        <h3 class="text-white text-3xl md:text-5xl font-medium tracking-tight whitespace-nowrap mb-4" style="font-family: 'Playfair Display', serif;">Bambino Classic</h3>
+                        <p class="text-[#a8a29e] text-sm font-light leading-relaxed max-w-sm" style="font-family: 'Inter', sans-serif;">
+                            Mostrador abaulado atemporal com maquinário a corda aparente e acabamentos em pulseira de couro croco premium espanhol.
+                        </p>
                     </div>
                 </div>
 
-                <!-- RIGHT SIDE: Video / Visuals -->
-                <div class="relative h-[60vh] lg:h-full w-full flex items-center justify-center lg:justify-end right-content">
+                <!-- Card 2: Skeleton -->
+                <div class="coll-item relative flex-1 min-h-[150px] lg:min-h-0 bg-[#0a0a0a] rounded-2xl overflow-hidden cursor-pointer group shadow-2xl border border-white/5">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                    <img src="assets/img/orient_collection_skeleton_1773523159406.png" alt="Orient Star Skeleton" class="coll-bg-zoom absolute inset-0 w-full h-full object-cover origin-center scale-110">
                     
-                    <!-- Decorative background blur -->
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-neutral-200/50 rounded-full blur-[100px] -z-10"></div>
-                    
-                    <!-- Video Container -->
-                    <div class="w-full max-w-lg lg:max-w-xl aspect-[4/5] object-cover rounded-3xl overflow-hidden shadow-2xl relative">
-                        <video 
-                            id="product-video"
-                            class="w-full h-full object-cover scale-[1.05]"
-                            muted 
-                            playsinline 
-                            preload="auto"
-                            src="assets/raw_files/video relogio.mp4"
-                        >
-                            O seu navegador não suporta a visualização deste vídeo.
-                        </video>
-                        <!-- Top Gradient Overlay for subtle blending -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none"></div>
+                    <div class="absolute inset-x-0 inset-y-0 flex items-center justify-center z-10 lg:group-hover:opacity-0 transition-opacity duration-300">
+                        <h3 class="text-white/40 text-2xl tracking-[0.5em] uppercase font-light whitespace-nowrap rotate-[-90deg] hidden lg:block" style="font-family: 'Inter', sans-serif;">Skeleton</h3>
+                        <h3 class="text-white text-2xl tracking-[0.1em] uppercase block lg:hidden" style="font-family: 'Playfair Display', serif;">Star Skeleton</h3>
                     </div>
 
-                    <!-- Floating Metrics -->
-                    <div class="absolute right-0 bottom-1/4 translate-x-1/4 fade-up hidden md:flex flex-col gap-6">
-                        <div class="glass-badge p-4 rounded-2xl flex flex-col gap-1 shadow-xl">
-                            <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Reserva de marcha</span>
-                            <span class="text-2xl font-bold tracking-tighter">72h</span>
-                        </div>
-                        <div class="glass-badge p-4 rounded-2xl flex flex-col gap-1 shadow-xl">
-                            <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Resistência ATM</span>
-                            <span class="text-2xl font-bold tracking-tighter">100m</span>
-                        </div>
+                    <div class="coll-content absolute bottom-0 left-0 w-full p-8 md:p-10 z-20 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end">
+                        <span class="text-[#d4af37] text-[0.6rem] font-mono uppercase tracking-[0.2em] mb-2">Visão em Tempo Real</span>
+                        <h3 class="text-white text-3xl md:text-5xl font-medium tracking-tight whitespace-nowrap mb-4" style="font-family: 'Playfair Display', serif;">Orient Star Skeleton</h3>
+                        <p class="text-[#a8a29e] text-sm font-light leading-relaxed max-w-sm" style="font-family: 'Inter', sans-serif;">
+                            Alta-relojoaria exibida. Um espetáculo a olho nu dos engates precisos do movimento escapement, reservado aos verdadeiros amantes mecânicos.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Diver -->
+                <div class="coll-item relative flex-1 min-h-[150px] lg:min-h-0 bg-[#0a0a0a] rounded-2xl overflow-hidden cursor-pointer group shadow-2xl border border-white/5">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                    <img src="assets/img/orient_collection_diver_1773523146191.png" alt="Orient Mako Diver" class="coll-bg-zoom absolute inset-0 w-full h-full object-cover origin-center scale-110">
+                    
+                    <div class="absolute inset-x-0 inset-y-0 flex items-center justify-center z-10 lg:group-hover:opacity-0 transition-opacity duration-300">
+                        <h3 class="text-white/40 text-2xl tracking-[0.5em] uppercase font-light whitespace-nowrap rotate-[-90deg] hidden lg:block" style="font-family: 'Inter', sans-serif;">Diver</h3>
+                        <h3 class="text-white text-2xl tracking-[0.1em] uppercase block lg:hidden" style="font-family: 'Playfair Display', serif;">Mako Pro Diver</h3>
+                    </div>
+
+                    <div class="coll-content absolute bottom-0 left-0 w-full p-8 md:p-10 z-20 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end">
+                        <span class="text-[#d4af37] text-[0.6rem] font-mono uppercase tracking-[0.2em] mb-2">Desempenho Extremo</span>
+                        <h3 class="text-white text-3xl md:text-5xl font-medium tracking-tight whitespace-nowrap mb-4" style="font-family: 'Playfair Display', serif;">Mako Pro Diver</h3>
+                        <p class="text-[#a8a29e] text-sm font-light leading-relaxed max-w-sm" style="font-family: 'Inter', sans-serif;">
+                            Construído para desafios severos. Aço inoxidável super-rígido, luminescência em alta definição e resistência a pressões abissais.
+                        </p>
                     </div>
                 </div>
 
             </div>
+
+            </div>
         </div>
-        
-    </div>
+    </section>
 
-    <!-- Scripts -->
-    <script>
-        // Lenis Smooth Scroll Initialization
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        });
+    <!-- Quarta Dobra: Legacy Living Background (Simulated Video) -->
+    <section id="legacy" class="relative z-10 w-full min-h-screen flex items-center justify-start py-24 overflow-hidden">
+        <!-- Living Background (Cinematic Image with GSAP Animation) -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+            <img src="assets/img/orient_legacy_background.png" alt="Orient Precision Background" class="legacy-bg-img w-full h-full object-cover opacity-80 scale-110">
+            <div class="absolute inset-0 bg-black/20 backdrop-blur-[0.5px]"></div>
+            <!-- Overlay de Vinheta Suave para destacar o Watch à direita -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,transparent_0%,rgba(2,2,2,0.8)_70%)]"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#020202] via-transparent to-[#020202]"></div>
+        </div>
 
-        // Sync Lenis with GSAP ScrollTrigger
-        lenis.on('scroll', ScrollTrigger.update);
-
-        gsap.ticker.add((time) => {
-            lenis.raf(time * 1000);
-        });
-
-        gsap.ticker.lagSmoothing(0);
-
-        // Wait for DOM to load
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // GSAP ScrollTrigger registration
-            gsap.registerPlugin(ScrollTrigger);
-
-            const video = document.getElementById('product-video');
-            
-            // Text Splitting for animated impact
-            const headline = new SplitType('#hero-headline', { types: 'lines, words, chars' });
-            
-            // Hero Entrance Animation Timeline
-            const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-            // Ensure video metadata is loaded before animating video progress
-            video.addEventListener('loadedmetadata', function() {
+        <div class="max-w-4xl w-full px-6 lg:ml-20 relative z-10">
+            <!-- Glow Card (Inspirado no Gemini Animation) -->
+            <div id="glow-panel" class="glow-card group rounded-3xl p-1 md:p-12 lg:p-16 backdrop-blur-xl shadow-[0_50px_100px_-20px_rgba(0,0,0,0.9)] transform-gpu" onmousemove="const rect = this.getBoundingClientRect(); this.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`); this.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);">
                 
-                // Video scroll-driven playback
-                let scrollAnim = gsap.to(video, {
-                    currentTime: video.duration,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: 1, // Smooth scrubbing
-                    }
-                });
+                <!-- Borda de Brilho (Beam) -->
+                <div class="beam-layer">
+                    <div class="beam-content"></div>
+                </div>
 
-                // Parallax on the video container
-                gsap.to(video, {
-                    scale: 1,
-                    scrollTrigger: {
-                        trigger: ".scroll-container",
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: true
-                    }
-                });
-            });
+                <!-- Conteúdo Interno do Card -->
+                <div class="relative z-20 bg-[#050505]/90 p-8 md:p-12 rounded-[1.4rem] border border-white/10">
+                    <div class="legacy-content text-left">
+                        <span class="inline-block text-[#d4af37] text-[0.7rem] font-mono uppercase tracking-[0.5em] mb-6 legacy-reveal">Tradição Japonesa desde 1950</span>
+                        <h2 class="text-4xl md:text-7xl font-normal mb-8 legacy-reveal leading-tight" style="font-family: 'Playfair Display', serif;">
+                            <span class="bg-clip-text text-transparent bg-gradient-to-b from-white via-white/80 to-stone-500">A Essência da</span><br/>
+                            <span class="text-[#d4af37] italic">Relojoaria.</span>
+                        </h2>
+                        
+                        <div class="w-16 h-[2px] bg-gradient-to-r from-[#d4af37] to-transparent mb-10 legacy-reveal"></div>
+                        
+                        <p class="text-[#e7e5e4] text-lg font-light leading-relaxed mb-12 max-w-2xl legacy-reveal opacity-80" style="font-family: 'Inter', sans-serif;">
+                            Cada calibre Orient é uma celebração da engenharia mecânica pura. Preservamos a arte da fabricação interna para garantir que cada batida do seu relógio seja fruto de décadas de mestria e inovação silenciosa.
+                        </p>
 
-            // If video is already cached and loaded metadata
-            if (video.readyState >= 1) {
-                video.dispatchEvent(new Event('loadedmetadata'));
-            }
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12 legacy-reveal">
+                            <div class="text-left">
+                                <span class="block text-[#d4af37] text-2xl font-light mb-1" style="font-family: 'Playfair Display', serif;">1950</span>
+                                <span class="text-[0.6rem] uppercase tracking-widest text-[#a8a29e] font-mono">Fundação</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-[#d4af37] text-2xl font-light mb-1" style="font-family: 'Playfair Display', serif;">40h+</span>
+                                <span class="text-[0.6rem] uppercase tracking-widest text-[#a8a29e] font-mono">Reserva Power</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-[#d4af37] text-2xl font-light mb-1" style="font-family: 'Playfair Display', serif;">21.600</span>
+                                <span class="text-[0.6rem] uppercase tracking-widest text-[#a8a29e] font-mono">VPH</span>
+                            </div>
+                            <div class="text-left">
+                                <span class="block text-[#d4af37] text-2xl font-light mb-1" style="font-family: 'Playfair Display', serif;">Japão</span>
+                                <span class="text-[0.6rem] uppercase tracking-widest text-[#a8a29e] font-mono">Origem</span>
+                            </div>
+                        </div>
 
-            // Text Reveal Animation
-            gsap.set(headline.chars, { y: '115%' });
-            gsap.set('.fade-up', { y: 30, opacity: 0 });
+                        <button class="px-10 py-4 bg-white text-black text-[0.7rem] font-bold uppercase tracking-[0.2em] hover:bg-[#d4af37] hover:text-white transition-all duration-500 rounded-full legacy-reveal">
+                            Saiba mais sobre o Calibre
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Clássico -->
+    <footer class="relative z-10 w-full bg-[#020202] py-16 px-6 md:px-20 border-t border-white/5">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="flex items-center gap-3">
+                <svg fill="#d4af37" viewBox="0 0 100 100" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 5 L90 20 L90 60 C90 80 50 95 50 95 C50 95 10 80 10 60 L10 20 Z" fill="none" stroke="#d4af37" stroke-width="6"/>
+                    <path d="M50 15 L80 28 L80 58 C80 75 50 85 50 85 C50 85 20 75 20 58 L20 28 Z" fill="#b91c1c"/>
+                </svg>
+                <span class="font-serif text-xl font-bold tracking-[0.15em] text-white" style="font-family: 'Playfair Display', serif;">ORIENT</span>
+            </div>
+            
+            <div class="flex gap-8 text-[0.6rem] uppercase tracking-widest text-stone-500 font-mono">
+                <a href="#" class="hover:text-white transition-colors">Política de Privacidade</a>
+                <a href="templates/design_system.html" class="hover:text-white transition-colors">Design System</a>
+                <a href="#" class="hover:text-white transition-colors">Boutiques</a>
+            </div>
 
-            tl.to(headline.chars, {
-                y: '0%',
-                duration: 1,
-                stagger: 0.02,
-                delay: 0.2
-            })
-            .to('.fade-up', {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                stagger: 0.1,
-            }, "-=0.8");
+            <div class="text-[0.6rem] uppercase tracking-widest text-stone-600 font-mono">
+                &copy; 2026 Orient Watch. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
 
-            // Scroll indicator animation
-            gsap.to('.scroll-indicator', {
-                y: '100%',
-                duration: 1.5,
-                ease: 'power2.inOut',
-                repeat: -1,
-                yoyo: true
-            });
-        });
-    </script>
+    <!-- Bibliotecas Externas Otimizadas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script src="assets/js/main.js"></script>
 </body>
+
 </html>
